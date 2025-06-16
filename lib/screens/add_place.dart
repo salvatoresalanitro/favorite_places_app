@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:favorite_places_app/models/place.dart';
 import 'package:favorite_places_app/providers/user_places.dart';
 import 'package:favorite_places_app/widgets/image_input.dart';
@@ -13,14 +15,18 @@ class AddPlace extends ConsumerStatefulWidget {
 
 class _AddPlaceState extends ConsumerState<AddPlace> {
   final _titleController = TextEditingController();
+  File? _selectedImage;
 
   void _savePlace() {
     final enteredTitle = _titleController.text;
-    if(enteredTitle.isEmpty) {
+    if (enteredTitle.isEmpty || _selectedImage == null) {
       return;
     }
 
-    final newPlace = Place(title: enteredTitle);
+    final newPlace = Place(
+      title: enteredTitle,
+      image: _selectedImage!,
+    );
 
     ref.read(userPlacesProviders.notifier).addPlace(newPlace);
 
@@ -55,7 +61,9 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
                 ),
               ),
               const SizedBox(height: 10),
-              const ImageInput(),
+              ImageInput(
+                onPickImage: (image) => _selectedImage = image,
+              ),
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: _savePlace,
