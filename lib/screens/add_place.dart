@@ -1,20 +1,33 @@
 import 'package:favorite_places_app/models/place.dart';
+import 'package:favorite_places_app/providers/user_places.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlace extends StatelessWidget {
+class AddPlace extends ConsumerStatefulWidget {
   const AddPlace({super.key});
 
-  void _saveItem(
-    BuildContext context,
-    TextEditingController titleController,
-  ) {
-    Navigator.pop(context, Place(title: titleController.text));
+  @override
+  ConsumerState<AddPlace> createState() => _AddPlaceState();
+}
+
+class _AddPlaceState extends ConsumerState<AddPlace> {
+  final _titleController = TextEditingController();
+
+  void _savePlace() {
+    final enteredTitle = _titleController.text;
+    if(enteredTitle.isEmpty) {
+      return;
+    }
+
+    final newPlace = Place(title: enteredTitle);
+
+    ref.read(userPlacesProviders.notifier).addPlace(newPlace);
+
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final titleController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add new Place'),
@@ -35,14 +48,14 @@ class AddPlace extends StatelessWidget {
                 decoration: const InputDecoration(
                   label: Text('Title'),
                 ),
-                controller: titleController,
+                controller: _titleController,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 16),
               ElevatedButton.icon(
-                onPressed: () => _saveItem(context, titleController),
+                onPressed: _savePlace,
                 icon: Icon(Icons.add),
                 label: Text('Add Place'),
               ),
