@@ -1,3 +1,4 @@
+import 'package:favorite_places_app/widgets/new_place_screen.dart';
 import 'package:flutter/material.dart';
 
 class PlacesScreen extends StatefulWidget {
@@ -8,13 +9,21 @@ class PlacesScreen extends StatefulWidget {
 }
 
 class _PlacesScreenState extends State<PlacesScreen> {
+
+  void _addNewPlace() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (ctx) => NewPlaceScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Places'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.add))
+          IconButton(onPressed: _addNewPlace, icon: Icon(Icons.add)),
         ],
       ),
     );
