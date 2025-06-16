@@ -1,4 +1,4 @@
-import 'package:favorite_places_app/widgets/new_place_screen.dart';
+import 'package:favorite_places_app/widgets/new_place_item.dart';
 import 'package:flutter/material.dart';
 
 class PlacesScreen extends StatefulWidget {
@@ -9,12 +9,21 @@ class PlacesScreen extends StatefulWidget {
 }
 
 class _PlacesScreenState extends State<PlacesScreen> {
+  List<NewPlaceitem> _newPlaces = [];
 
-  void _addNewPlace() {
-    Navigator.push(
+  void _addNewPlace() async {
+    final newPlace = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (ctx) => NewPlaceScreen()),
+      MaterialPageRoute(builder: (ctx) => NewPlaceitem()),
     );
+
+    if(newPlace == null) {
+      return;
+    }
+
+    setState(() {
+      _newPlaces.add(newPlace);
+    });
   }
 
   @override
