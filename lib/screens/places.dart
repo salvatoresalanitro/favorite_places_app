@@ -1,35 +1,16 @@
-import 'package:favorite_places_app/models/place.dart';
+import 'package:favorite_places_app/providers/user_places.dart';
 import 'package:favorite_places_app/screens/add_place.dart';
 import 'package:favorite_places_app/widgets/places_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Places extends StatefulWidget {
+class Places extends ConsumerWidget {
   const Places({super.key});
 
   @override
-  State<Places> createState() => _PlacesState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPlaces = ref.watch(userPlacesProviders);
 
-class _PlacesState extends State<Places> {
-  final List<Place> _places = [];
-
-  void _addNewPlace() async {
-    final newPlace = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (ctx) => AddPlace()),
-    );
-
-    if (newPlace == null) {
-      return;
-    }
-
-    setState(() {
-      _places.add(newPlace);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Places'),
@@ -41,10 +22,16 @@ class _PlacesState extends State<Places> {
             )
             .backgroundColor,
         actions: [
-          IconButton(onPressed: _addNewPlace, icon: Icon(Icons.add)),
+          IconButton(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (ctx) => AddPlace()),
+            ),
+            icon: Icon(Icons.add),
+          ),
         ],
       ),
-      body: PlacesList(places: _places),
+      body: PlacesList(places: userPlaces),
     );
   }
 }
