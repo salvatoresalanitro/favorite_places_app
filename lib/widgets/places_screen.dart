@@ -10,6 +10,13 @@ class PlacesScreen extends StatefulWidget {
 class _PlacesScreenState extends State<PlacesScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Your Places'),
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.add))
+        ],
+      ),
+    );
   }
 }
