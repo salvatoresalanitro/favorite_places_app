@@ -26,13 +26,7 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
       return;
     }
 
-    final newPlace = Place(
-      title: enteredTitle,
-      image: _selectedImage!,
-      location: _selectedLocation!,
-    );
-
-    ref.read(userPlacesProviders.notifier).addPlace(newPlace);
+    ref.read(userPlacesProviders.notifier).addPlace(enteredTitle, _selectedImage!, _selectedLocation!);
 
     Navigator.pop(context);
   }
